@@ -1,0 +1,7 @@
+#!/bin/sh
+
+mkdir -p /usr/local/bin
+python setup.py install
+rm -rf build
+echo "Copying images2jgw.py to /usr/local/bin"
+cp images2jgw.py /usr/local/bin
