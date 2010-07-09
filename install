@@ -5,3 +5,5 @@ python setup.py install
 rm -rf build
 echo "Copying images2jgw.py to /usr/local/bin"
 cp images2jgw.py /usr/local/bin
+echo "Copying fovbox.py to /usr/local/bin"
+cp fovbox.py /usr/local/bin

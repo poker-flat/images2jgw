@@ -96,6 +96,18 @@ class JheadParser:
         if rotate == True:
             self.rotate = True
     
+    def setControlPoints(p0, p1, p2):
+        if instanceof(p0, Point) and instanceof(p1, Point) and instanceof(p2, Point):
+            self.p0 = p0
+            self.p1 = p1
+            self.p2 = p2
+            return True
+        else
+            return False
+    
+    def getRotationDegree(t=.5):
+        
+    
     def parse(self, line):
         if not self.Filename_parsed and self.__parse_Filename(line):
             self.Filename_parsed = True
@@ -465,7 +477,7 @@ def main():
     images_line = (" ").join(images)
     prog("Parsing %d file(s)...\n" % (len(images),))
     prog("Gathering jhead output...")
-    jhead = commands.getoutput('jhead -v %s' % (images_line,))
+    jhead = commands.getoutput('jhead -v -autorot %s' % (images_line,))
     prog("Done.\n")
     #print jhead
     exif = jhead.split("\n\n")
@@ -528,7 +540,7 @@ def main():
                 
                 #                                     images[count-1]     GCP1    GCP2    GCP3    GCP4    GCP5                                             odir
                 debug(commands.getoutput("gdal_translate -of GTiff %s -gcp %s -gcp %s -gcp %s -gcp %s -gcp %s -a_srs \"+proj=latlong +datum=WGS84 +no_defs\" %stemp.tif" % (images[count-1], GCP1, GCP2, GCP3, GCP4, GCP5, odir)))
-                debug(commands.getoutput("gdalwarp %stemp.tif %s" % (odir, tf)))
+                debug(commands.getoutput("gdalwarp -t_srs \"+proj=laea +lat_0=60.00 +lon_0=-180.000 +x_0=0 +y_0=0 +datum=WGS84 +units=m  +no_defs\" -dstnodata 0 -dstalpha -co \"TILED=YES\" -co \"ALPHA=YES\" -multi %stemp.tif %s" % (odir, tf)))
                 debug(commands.getoutput("rm %stemp.tif" % (odir,)))
                 debug(commands.getoutput("listgeo -tfw %s" % (tf,)))
             
@@ -566,7 +578,6 @@ def main():
             print "\nThere were some errors during processing. I couldn't write the errors to a file, so the output is below:"
             sys.stderr.write("%d file(s) had parsing errors:\r\n" % (len(errors_output.split("\n"))-1,))
             sys.stderr.write(errors_output)
-
 
 if __name__ == '__main__':
     main()

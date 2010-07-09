@@ -421,6 +421,9 @@ class Point:
     def __str__(self):
         return "(%.12f, %12f)" % (self.x, self.y)
     
+    def __repr__(self):
+        return self.__str__()
+    
     
     #
     # Method: geoDistanceTo
@@ -580,3 +583,91 @@ class Point:
         distance = point.geoDistanceTo(self)
         
         return point.geoWaypoint(distance, bearing+degrees)
+
+
+class Vec2(object):
+    x = 0
+    y = 0
+    
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
+    
+    def __str__(self):
+        return "[%s, %s]" % (self.x, self.y)
+    
+    def __repr__(self):
+        return self.__str__()
+    
+    def __add__(self, rhs):
+        if isinstance(rhs, Vec2):
+            temp_x = self.x + rhs.x
+            temp_y = self.y + rhs.y
+            return Vec2(temp_x, temp_y)
+        if isinstance(rhs, int) or isinstance(rhs, float):
+            temp_x = self.x + rhs
+            temp_y = self.y + rhs
+            return Vec2(temp_x, temp_y)
+        else:
+            raise ValueError("Could not add objects.")
+    
+    def __radd__(self, lhs):
+        return self.__add__(lhs)
+    
+    def __sub__(self, rhs):
+        if isinstance(rhs, Vec2):
+            return self.__add__(Vec2(-rhs.x, -rhs.y))
+        if isinstance(rhs, int) or isinstance(rhs, float):
+            return self.__add__(-rhs)
+        else:
+            raise ValueError("Could not subtract objects.")
+
+    def __rsub__(self, lhs):
+        return self.__add__(-lhs)
+    
+    def __neg__(self):
+        return Vec2(-self.x, -self.y)
+    
+    def __pos__(self):
+        return Vec2(self.x, self.y)
+    
+    def __abs__(self):
+        return Vec2(abs(self.x), abs(self.y))
+    
+    def __mul__(self, rhs):
+        if isinstance(rhs, Vec2):
+            return self.x*rhs.x + self.y*rhs.y
+        if isinstance(rhs, int) or isinstance(rhs, float):
+            return Vec2(self.x*rhs, self.y*rhs)
+    
+    def __rmul__(self, lhs):
+        return self.__mul__(lhs)
+    
+    def __getitem__(self, x):
+        if isinstance(x, int):
+            if x == 0:
+                return self.x
+            elif x == 1:
+                return self.y
+            else:
+                raise IndexError("Index out of range. Must be 0 or 1.")
+        else:
+            raise ValueError("Index must of type 'int'")
+    
+    def __div__(self, rhs):
+        if isinstance(rhs, int) or isinstance(rhs, float):
+            return Vec2(float(self.x)/float(rhs), float(self.y)/float(rhs))
+        else:
+            raise ValueError("Can only divide by a scalar.")
+    
+    def __invert__(self):
+        return self / (self * self)
+    
+    def getList(self):
+        return [self.x, self.y]
+    
+    def getTuple(self):
+        return (self.x, self.y)
+    
+    def getPoint(self):
+        return Point(self.x, self.y)
