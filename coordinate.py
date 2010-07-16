@@ -671,3 +671,9 @@ class Vec2(object):
     
     def getPoint(self):
         return Point(self.x, self.y)
+    
+    # Angle off north [Vec2(0,1)]
+    def getAngleDeg(self):
+        p0 = Point(0, 0)
+        p1 = Point(self.x, self.y)
+        return p0.geoBearingTo(p1)
