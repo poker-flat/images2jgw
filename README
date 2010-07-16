@@ -1,0 +1,27 @@
+To install:
+
+$ sudo ./install
+
+This will copy necessary files to /usr/local/bin and /usr/lib(64)/python2.(4,5,6)/site-packages
+
+... and you're done!
+
+---
+
+To uninstall:
+
+Just remove these files from /usr/local/bin:
+
+  fovbox.py
+  images2jgw.py
+
+and remove these files from /usr/lib(64)/python2.(4,5,6)/site-packages:
+
+  coordinate.py
+
+... and you're done!
+
+---
+
+Questions, comments, snide remarks: <jon_AT_gina.alaska.edu>
+
